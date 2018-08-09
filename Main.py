@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import keyboard as key, time
 
 def DFT_slow(x):
     '''compute the discrete fourier transform of the 1d array x'''
@@ -16,25 +17,37 @@ x = 4
 
 START = 0
 END = 10
-LENGTH = 100
+LENGTH = 500
 STEP = (END-START)/LENGTH
 x1 = np.arange(START, END, STEP)
-#plt.plot(x1, DFT_slow(x))
-#plt.show()
-#print(DFT_slow(x))
 
+z = np.zeros(LENGTH)
+z[x] = 1
+
+plt.ion()
 fig = plt.figure()
+fig.set_size_inches(18.5, 10.5)
 ax = fig.add_subplot(111)
+line1, = ax.plot(x1, DFT_slow(z), 'r-')
 
 while True:
-    z = np.zeros(LENGTH)
-    z[x] = 1
+    if key.is_pressed('up') and x < LENGTH-1:
+        x += 1
+        z = np.zeros(LENGTH)
+        z[x] = 1
+        line1.set_ydata(DFT_slow(z))
+        fig.canvas.draw()
+        fig.canvas.flush_events()
+    if key.is_pressed('down') and x > 1:
+        x -= 1
+        z = np.zeros(LENGTH)
+        z[x] = 1
+        line1.set_ydata(DFT_slow(z))
+        fig.canvas.draw()
+        fig.canvas.flush_events()
+    if key.is_pressed('esc'):
+        exit(0)
 
-    ax.clear()
-    #ax.plot(x1, DFT_slow(z))
-
-
-    f = [0,1,0,0,0,0,0,0]
-    t = [0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75]
-    ax.plot(t, DFT_slow(f))
+    print(x)
     plt.show()
+    # time.sleep(3)
