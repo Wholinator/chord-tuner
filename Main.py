@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import keyboard as key, time
+import keyboard as key
 
 
 def DFT_slow(x):
@@ -70,9 +70,9 @@ def update_plot(arr, i, change):
 #
 x = 1
 START = 0
-END = 250
-POINTS = 500
-PARAMS = 10
+END = 500
+POINTS = 300
+PARAMS = 100
 STEP = (END-START)/POINTS
 line1 = None
 fig = None
@@ -89,6 +89,7 @@ while True:
         line1.set_ydata(resize_output(POINTS, DFT_slow(z)))
         fig.canvas.draw()
         fig.canvas.flush_events()
+        plt.show()
     if key.is_pressed('down') and x > 1:
         x -= 1
         #update_plot(z, x, -1)
@@ -97,9 +98,10 @@ while True:
         line1.set_ydata(resize_output(POINTS, DFT_slow(z)))
         fig.canvas.draw()
         fig.canvas.flush_events()
+        plt.show()
     if key.is_pressed('esc'):
         exit(0)
 
     print(x)
-    plt.show()
+
     # time.sleep(3)
