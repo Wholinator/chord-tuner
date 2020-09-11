@@ -1,107 +1,71 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import keyboard as key
+import sys
+import wave
+import math
+import struct
+import random
+import argparse
+from itertools import count, cycle, islice, izip_longest
+
+def clip_amplitude(amplitude):
+  return float(1.0 if amplitude > 1.0 else 0.0 if amplitude < 0.0 else amplitude)
+
+def sin_wave_old(frequency=440.0, samplerate=44100, amplitude=0.5):
+  amplitude = clip_amplitude(amplitude)
+  angular_frequency = 2.0 * math.pi * float(frequency)
+  sin_generator = (float(amplitude) * math.sin(angular_frequency * (float(i) / float(samplerate))) for i in count(0))
+  return sin_generator
+
+# computes a sin wave for the period of the wave, then returns the infinite generator of that period looped
+# can think of this as computing the y value for a given x
+# the x is the generator of the i/samplerate for i in period 
+def sin_wave(frequency=440.0, samplerate=44100, amplitude=0.5):
+  period = int(samplerate / frequency)
+  amplitude = clip_amplitude(amplitude)
+  lookup = [float(amplitude) * math.sin(2.0*math.pi*float(frequency)*(float(i%period)/float(samplerate))) for i in range(period)]
+  return (lookup[i%period] for i in count(0))
+  
+# returns random value generator
+def white_noise_generator(amplitude=0.5):
+  return (clip_amplitude(amplitude) * random.uniform(-1, 1) for _ in count(0))
 
 
-def DFT_slow(x):
-    '''compute the discrete fourier transform of the 1d array x'''
-    x = np.asarray(x, dtype=float)
-    N = x.shape[0]
-    n = np.arange(N)
-    k = n.reshape((N, 1))
-    M = np.exp(-2j * np.pi * k * n / N)
-    return np.dot(M, x)
+def white_noise(amplitude=0.5):
+  noise = cycle(islice(white_noise_generator(amplitude), 44100))
+  return noise
 
 
-def init_plot(x):
-    global line1, fig
-
-    # generate x values for plotting
-    x1 = np.arange(START, END, STEP)
-
-    # create input array for DFT
-    z = np.zeros(PARAMS)
-    z[x] = 1
-
-    #initialize plot
-    plt.ion()
-    #plt.axis('scaled')
-    fig = plt.figure()
-    fig.set_size_inches(18.5, 10.5)
-    ax = fig.add_subplot(111)
-
-    # produce y values and lengthen to required set for plotting
-    output = DFT_slow(z)
-    output = resize_output(len(x1), output)
-
-    # initialize line object for plotting and updating
-    line1, = ax.plot(x1, output, 'r-')
-    plt.show()
+def compute_samples(channels, nsamples=None):
+  # zip(*channel) this combines all the channel components into a single channel list with tuples for each timeslice containing each component
+  # map(sum, zip(*channel)) for channel in channels - this sums all the channel components into a single list for each channel
+  # zip(*(map...)) takes the channel audio streams, and combines them into a single stream of tuples one element for each original channel
+  # islice cuts this infinite stream at the sample size desired
+  return islice(zip(*(map(sum, zip(*channel)) for channel in channels)), nsamples)
 
 
-# repeat data to fill up desired space
-def resize_output(size, arr):
-    f_out = arr
+def grouper(n, iterable, fillvalue=None):
+  args = [iter(iterable)] * n
+  return izip_longest(fillvalue=fillvalue, *args)
 
-    while size > len(f_out) + len(arr):
-        f_out = np.concatenate((f_out, arr))
+def write_wavefile(filename, samples, nframes=None, nchannels=2, sampwidth=2, framerate=44100, bufsize=2048):
+  if nframes is None:
+    nframes = -1
 
-    diff = size - len(f_out)
+  w = wave.open(filename, 'w')
+  w.setparams(nchannels, sampwidth, framerate, nframes, 'NONE', 'not compressed')
 
-    if diff > 0:
-        f_out = np.concatenate((f_out, arr[0:diff]))
+  max_amplitude = float(int((2 ** (sampwidth * 8)) / 2) - 1)
 
-    return f_out
-
-
-def update_plot(arr, i, change):
-    arr[i] += change
-
-    output = DFT_slow(arr)
-    output = resize_output(POINTS, output)
-    line1.set_ydata(output)
-    fig.canvas.draw()
-    fig.canvas.flush_events()
-    return arr
+  for chunk in grouper(bufsize, samples):
+    frames = ''.join(''.join(struct.pack('h', int(max_amplitude * sample)) for sample in channels) for channels in chunk if channels is not None)
 
 
-#
-# Init Graph
-#
-x = 1
-START = 0
-END = 500
-POINTS = 300
-PARAMS = 100
-STEP = (END-START)/POINTS
-line1 = None
-fig = None
-init_plot(x)
+def main():
+  channels=(
+            (sin_wave(),), # left channel
+            (sin_wave(),)  # right channel
+           )
+  samples = compute_samples(channels)
 
-z = np.zeros(PARAMS)
+  filename = "test.wav"
 
-while True:
-    if key.is_pressed('up') and x < PARAMS-1:
-        x += 1
-        #update_plot(z, x, 1)
-        z = np.zeros(PARAMS)
-        z[x] = 1
-        line1.set_ydata(resize_output(POINTS, DFT_slow(z)))
-        fig.canvas.draw()
-        fig.canvas.flush_events()
-        plt.show()
-    if key.is_pressed('down') and x > 1:
-        x -= 1
-        #update_plot(z, x, -1)
-        z = np.zeros(PARAMS)
-        z[x] = 1
-        line1.set_ydata(resize_output(POINTS, DFT_slow(z)))
-        fig.canvas.draw()
-        fig.canvas.flush_events()
-        plt.show()
-    if key.is_pressed('esc'):
-        exit(0)
-
-    print(x)
-
-    # time.sleep(3)
+  
