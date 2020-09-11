@@ -6,6 +6,8 @@ import random
 import argparse
 from itertools import count, cycle, islice, izip_longest
 
+# from here https://zach.se/generate-audio-with-python/
+
 def clip_amplitude(amplitude):
   return float(1.0 if amplitude > 1.0 else 0.0 if amplitude < 0.0 else amplitude)
 
