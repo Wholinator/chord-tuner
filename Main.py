@@ -12,7 +12,7 @@ from threading import Thread
 from itertools import count, cycle, islice, zip_longest
 
 mpl = multiprocess.log_to_stderr()
-mpl.setLevel(logging.INFO)
+mpl.setLevel(logging.DEBUG)
 #multiprocess.set_start_method("spawn")
 
 # from here https://zach.se/generate-audio-with-python/
@@ -86,6 +86,9 @@ def write_wavefile(filename, samples, nframes=44100, nchannels=2, sampwidth=2, f
   return filename
 
 def write_audiostream(stream, samples, nchannels=2, sampwidth=2, framerate=44100, bufsize=2048):
+  # pya = pyaudio.PyAudio()
+  # stream = pya.open(format = pya.get_format_from_width(width=sampwidth), channels=nchannels, rate=framerate, output=True)
+
   max_amplitude = float(int((2 ** (sampwidth * 8)) / 2) - 1) / 100
 
   # if compute samples has no sample length, there'll be an infinite number of chunks
