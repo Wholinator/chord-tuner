@@ -1,2 +1,5 @@
-venv/
+
 .history/
+__pycache__
+.gitignore
+.vscode
