@@ -13,7 +13,7 @@ from itertools import count, cycle, islice, zip_longest
 
 mpl = multiprocess.log_to_stderr()
 mpl.setLevel(logging.INFO)
-multiprocess.set_start_method("spawn")
+#multiprocess.set_start_method("spawn")
 
 # from here https://zach.se/generate-audio-with-python/
 # python -u "/Users/mwholey/Documents/git_repos/chord-tuner/Main.py"
