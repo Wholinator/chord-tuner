@@ -1,0 +1,17 @@
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] child process calling self.run()
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[INFO/MainProcess] calling terminate() for daemon Process-12
+[INFO/MainProcess] calling join() for process Process-12
+[DEBUG/MainProcess] running the remaining "atexit" finalizers

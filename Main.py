@@ -55,6 +55,7 @@ def compute_samples(channels, nsamples=None):
   # islice cuts this infinite stream at the sample size desired
   return islice(zip(*(map(sum, zip(*channel)) for channel in channels)), nsamples)
   ### sum function could be changed for interesting stuff
+  ### statistics normalization powers 
 
 
 def grouper(n, iterable, fillvalue=None):
@@ -86,15 +87,12 @@ def write_wavefile(filename, samples, nframes=44100, nchannels=2, sampwidth=2, f
   return filename
 
 def write_audiostream(stream, samples, nchannels=2, sampwidth=2, framerate=44100, bufsize=2048):
-  # pya = pyaudio.PyAudio()
-  # stream = pya.open(format = pya.get_format_from_width(width=sampwidth), channels=nchannels, rate=framerate, output=True)
-
   max_amplitude = float(int((2 ** (sampwidth * 8)) / 2) - 1) / 100
 
   # if compute samples has no sample length, there'll be an infinite number of chunks
   # which are bufsize length n-tuples of samples generator
   # since it's an infinite generator this means samples are continuous with no need to reset or break, just keeps chugging along infinitely
-  print('test')
+  mpl.info('test')
   for chunk in grouper(bufsize, samples):
     frames = b''.join(b''.join(struct.pack('h', int(max_amplitude * sample)) for sample in channels) for channels in chunk if channels is not None)
     stream.write(frames)
@@ -126,7 +124,6 @@ def main():
 
   pya = pyaudio.PyAudio()
   stream = pya.open(format = pya.get_format_from_width(width=sampwidth), channels=num_channels, rate=framerate, output=True)
-  #init_samples = compute_samples(((sin_wave()), (sin_wave())))
   ### GUI
   layout = [
     [
@@ -174,6 +171,7 @@ def main():
       event_old, values_old = event, values
 
       samples = update_samples(values)
+      # sound functions here, it just takes control away while in infinite loop
       # write_audiostream(stream, samples)
 
       if not 'audio_proc' in locals():
@@ -199,8 +197,6 @@ def main():
   
 
 main()
-
-
 
 # a = (math.sin(i/100) for i in itertools.count(0))
 #
