@@ -7,6 +7,7 @@ import argparse
 import pyaudio
 import PySimpleGUI as sg
 import multiprocess
+import queue as Queue
 import logging
 from threading import Thread
 from itertools import count, cycle, islice, zip_longest
@@ -69,6 +70,7 @@ def grouper(n, iterable, fillvalue=None):
   # since zip creates a list of n-tuples, this effectively just groups the infinite generator into an infinite list of n-tuples
   return zip_longest(fillvalue=fillvalue, *args)
 
+
 def write_wavefile(filename, samples, nframes=44100, nchannels=2, sampwidth=2, framerate=44100, bufsize=2048):
   w = wave.open(filename, 'w')
   w.setparams((nchannels, sampwidth, framerate, nframes, 'NONE', 'not compressed'))
@@ -86,16 +88,41 @@ def write_wavefile(filename, samples, nframes=44100, nchannels=2, sampwidth=2, f
   w.close()
   return filename
 
-def write_audiostream(stream, samples, nchannels=2, sampwidth=2, framerate=44100, bufsize=2048):
+
+
+def write_audiostream(queue, nchannels=2, sampwidth=2, framerate=44100, bufsize=2048):
+  message = queue.get(block=False)
+  samples = message
+
   max_amplitude = float(int((2 ** (sampwidth * 8)) / 2) - 1) / 100
+
+  pya = pyaudio.PyAudio()
+  stream = pya.open(format = pya.get_format_from_width(width=sampwidth), channels=nchannels, rate=framerate, output=True)
+  
+  STOP = False
 
   # if compute samples has no sample length, there'll be an infinite number of chunks
   # which are bufsize length n-tuples of samples generator
   # since it's an infinite generator this means samples are continuous with no need to reset or break, just keeps chugging along infinitely
-  mpl.info('test')
-  for chunk in grouper(bufsize, samples):
-    frames = b''.join(b''.join(struct.pack('h', int(max_amplitude * sample)) for sample in channels) for channels in chunk if channels is not None)
-    stream.write(frames)
+  while not STOP:
+
+    for chunk in grouper(bufsize, samples):
+      frames = b''.join(b''.join(struct.pack('h', int(max_amplitude * sample)) for sample in channels) for channels in chunk if channels is not None)
+      try:
+        mpl.info(stream.get_write_available())
+        stream.write(frames)
+      except Exception as e:
+        mpl.error(e)
+
+      try:
+        message = queue.get(block=False)
+        if message is not None:
+          samples = message
+
+        break
+      except Queue.Empty:
+        pass
+
 
 
 def update_samples(values):
@@ -161,26 +188,33 @@ def main():
   window = sg.Window('Shit', layout)
 
   event_old, values_old = None, None
+
+  stream_queue = multiprocess.Queue()
   while True:
     event, values = window.read(timeout = 50)
     if event in (None, 'Exit', 'Cancel'):
       break
 
     if values_old != values:
-      print(event, values)
+      mpl.info(event, values)
       event_old, values_old = event, values
 
       samples = update_samples(values)
       # sound functions here, it just takes control away while in infinite loop
       # write_audiostream(stream, samples)
 
+      queue_msg = samples
+      #stream_queue.put(queue_msg)
+
       if not 'audio_proc' in locals():
-        audio_proc = multiprocess.Process(target=write_audiostream, args=(stream, samples), daemon=True)
+        audio_proc = multiprocess.Process(target=write_audiostream, args=(stream_queue,), daemon=True)
         audio_proc.start()
+        stream_queue.put(queue_msg)
       else:
-        audio_proc.terminate()
-        audio_proc = multiprocess.Process(target=write_audiostream, args=(stream, samples), daemon=True)
-        audio_proc.start()
+        stream_queue.put(queue_msg)
+        # audio_proc.terminate()
+        # audio_proc = multiprocess.Process(target=write_audiostream, args=(stream, samples), daemon=True)
+        # audio_proc.start()
 
 
       ## THREAD think i'm getting GIL issues, getting stuck and unable to interact with the ui as the stream loop is holding on too tight
@@ -194,14 +228,5 @@ def main():
       #   audio_thread.daemon = True
       #   audio_thread.run()
 
-  
 
 main()
-
-# a = (math.sin(i/100) for i in itertools.count(0))
-#
-#
-##
-#
-#
-#

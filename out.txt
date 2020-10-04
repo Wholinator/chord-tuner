@@ -1,17 +1,100 @@
 [INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
-[INFO/MainProcess] child process calling self.run()
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
 [INFO/MainProcess] process shutting down
 [DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
-[INFO/MainProcess] calling terminate() for daemon Process-12
-[INFO/MainProcess] calling join() for process Process-12
+[DEBUG/MainProcess] running the remaining "atexit" finalizers 
+ 
+ 
+[INFO/MainProcess] child process calling self.run()
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] child process calling self.run()
+
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] child process calling self.run()
+
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] child process calling self.run()
+
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] child process calling self.run()
+
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] child process calling self.run()
+
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] child process calling self.run()
+
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] child process calling self.run()
+
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] child process calling self.run()
+
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] child process calling self.run()
+
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] child process calling self.run()
+
+||PaMacCore (AUHAL)|| Warning on line 525: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 529: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Warning on line 440: err=''who?'', msg=Audio Hardware: Unknown Property
+||PaMacCore (AUHAL)|| Error on line 1316: err='-10851', msg=Audio Unit: Invalid Property Value
+[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
+[DEBUG/MainProcess] running the remaining "atexit" finalizers[INFO/MainProcess] process shutting down
+[DEBUG/MainProcess] running all "atexit" finalizers with priority >= 0
 [DEBUG/MainProcess] running the remaining "atexit" finalizers
