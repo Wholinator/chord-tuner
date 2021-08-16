@@ -30,7 +30,7 @@ def sin_wave_old(frequency=440.0, samplerate=44100, amplitude=0.5):
   return sin_generator
 
 # computes a sin wave for the period of the wave, then returns the infinite generator of that period looped
-# can think of this as computing the y value for a given x
+# can think of this as computing the y value for amplitude given x
 # the x is the generator of the i/samplerate for i in period 
 def sin_wave(frequency=440.0, samplerate=44100, amplitude=0.5):
   period = int(samplerate / frequency)
@@ -61,7 +61,7 @@ def compute_samples(channels, nsamples=None):
 
 def grouper(n, iterable, fillvalue=None):
   # "grouper(3, 'ABCDEFG', 'x') --> zip_longest((A,B,C), (D,E,F), (G,x,x))"
-  # creates an array of n identical elements, each is the iterable, when one iterable is used, that action is
+  # creates an array of n identical iterables, when one iterable is used, that action is
   # replicated across all other iterables in the array as they are all actually the same memory address
   args = [iter(iterable)] * n
   # grabs first element from each iterator and places into a tuple, then second, and so on
@@ -89,10 +89,9 @@ def write_wavefile(filename, samples, nframes=44100, nchannels=2, sampwidth=2, f
   return filename
 
 
-
 def write_audiostream(queue, nchannels=2, sampwidth=2, framerate=44100, bufsize=2048):
   message = queue.get(block=False)
-  samples = message
+  samples_stream = message
 
   max_amplitude = float(int((2 ** (sampwidth * 8)) / 2) - 1) / 100
 
@@ -106,7 +105,7 @@ def write_audiostream(queue, nchannels=2, sampwidth=2, framerate=44100, bufsize=
   # since it's an infinite generator this means samples are continuous with no need to reset or break, just keeps chugging along infinitely
   while not STOP:
 
-    for chunk in grouper(bufsize, samples):
+    for chunk in samples_stream:
       frames = b''.join(b''.join(struct.pack('h', int(max_amplitude * sample)) for sample in channels) for channels in chunk if channels is not None)
       try:
         mpl.info(stream.get_write_available())
@@ -193,7 +192,7 @@ def main():
   while True:
     event, values = window.read(timeout = 50)
     if event in (None, 'Exit', 'Cancel'):
-      break
+      exit()
 
     if values_old != values:
       mpl.info(event, values)
@@ -203,30 +202,39 @@ def main():
       # sound functions here, it just takes control away while in infinite loop
       # write_audiostream(stream, samples)
 
-      queue_msg = samples
-      #stream_queue.put(queue_msg)
+      zip_gen = grouper(2048, samples)
 
-      if not 'audio_proc' in locals():
-        audio_proc = multiprocess.Process(target=write_audiostream, args=(stream_queue,), daemon=True)
-        audio_proc.start()
-        stream_queue.put(queue_msg)
-      else:
-        stream_queue.put(queue_msg)
-        # audio_proc.terminate()
-        # audio_proc = multiprocess.Process(target=write_audiostream, args=(stream, samples), daemon=True)
-        # audio_proc.start()
+      big_stream = []
+      count = 0
+      for i in zip_gen:
+        big_stream.append(list(i))
+        count += 1
+        if count >= 50:
+          break
+
+      stream_queue.put(big_stream)
+
+    #   if not 'audio_proc' in locals():
+    #     audio_proc = multiprocess.Process(target=write_audiostream, args=(stream_queue,), daemon=True)
+    #     audio_proc.start()
+    #   else:
+    #     stream_queue.put(big_stream)
+
+    #     audio_proc.terminate()
+    #     audio_proc = multiprocess.Process(target=write_audiostream, args=(stream, samples), daemon=True)
+    #     audio_proc.start()
 
 
       ## THREAD think i'm getting GIL issues, getting stuck and unable to interact with the ui as the stream loop is holding on too tight
-      # if not 'audio_thread' in locals():
-      #   audio_thread = Thread(target=write_audiostream, args=(stream, samples))
-      #   audio_thread.daemon = True
-      #   audio_thread.run()
-      # else:
-      #   audio_thread._stop()
-      #   audio_thread = Thread(target=write_audiostream, args=(stream, samples))
-      #   audio_thread.daemon = True
-      #   audio_thread.run()
+      if not 'audio_thread' in locals():
+        audio_thread = Thread(target=write_audiostream, args=(stream, samples))
+        audio_thread.daemon = True
+        audio_thread.run()
+      else:
+        audio_thread._stop()
+        audio_thread = Thread(target=write_audiostream, args=(stream, samples))
+        audio_thread.daemon = True
+        audio_thread.run()
 
 
 main()
